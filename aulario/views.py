@@ -1,24 +1,26 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-
-# Create your views here.
-from django.contrib.auth.models import User
-from django.shortcuts import get_object_or_404
-from .serializers import UserSerializer
-from rest_framework import viewsets
+from rest_framework import status
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import DjangoModelPermissionsOrAnonReadOnly
 from rest_framework.response import Response
+from aulario.models import User
+from aulario.serializers import UserSerializer
 
-class UserViewSet(viewsets.ViewSet):
+
+@api_view(['GET', 'POST'])
+@permission_classes([DjangoModelPermissionsOrAnonReadOnly])
+def user_list(request):
     """
-    A simple ViewSet for listing or retrieving users.
+    List all code snippets, or create a new snippet.
     """
-    def list(self, request):
-        queryset = User.objects.all()
-        serializer = UserSerializer(queryset, many=True)
+    if request.method == 'GET':
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
         return Response(serializer.data)
 
-    def retrieve(self, request, pk=None):
-        queryset = User.objects.all()
-        user = get_object_or_404(queryset, pk=pk)
-        serializer = UserSerializer(user)
-        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    return None
