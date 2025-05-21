@@ -1,0 +1,10 @@
+### Send POST request with json body
+POST http://127.0.0.1:8000/aulario/usuarios/
+Content-Type: application/json
+
+{
+  "name": "Cesar",
+  "email": "danielwantun@campusaulacom",
+  "password": "Campus-123",
+  "admin": false
+}
