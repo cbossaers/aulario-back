@@ -6,8 +6,8 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from aulario.models import User, Aula
-from aulario.serializers import UserSerializer, AulaSerializer
+from aulario.models import User, Aula, Asignatura
+from aulario.serializers import UserSerializer, AulaSerializer, AsignaturaSerializer
 
 @permission_classes([AllowAny])
 class UserList(APIView):
@@ -99,4 +99,52 @@ class AulaDetail(APIView):
     def delete(self, request, pk, format=None):
         aula = self.get_object(pk)
         aula.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+@permission_classes([AllowAny])
+class AsignaturaList(APIView):
+    """
+    List all asignaturas, or create a new asignatura.
+    """
+
+    def get(self, request, format=None):
+        asignatura = Asignatura.objects.all()
+        serializer = AulaSerializer(asignatura, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, format=None):
+        serializer = AsignaturaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@permission_classes([AllowAny])
+class AsignaturaDetail(APIView):
+    """
+    Retrieve, update or delete a asignatura instance.
+    """
+
+    def get_object(self, pk):
+        try:
+            return Asignatura.objects.get(pk=pk)
+        except Asignatura.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, format=None):
+        asignatura = self.get_object(pk)
+        serializer = AsignaturaSerializer(asignatura)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        asignatura = self.get_object(pk)
+        serializer = AsignaturaSerializer(asignatura, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, format=None):
+        asignatura = self.get_object(pk)
+        asignatura.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

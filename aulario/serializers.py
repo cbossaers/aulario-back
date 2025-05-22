@@ -10,3 +10,8 @@ class AulaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Aula
         fields = ('id', 'name', 'capacity')
+
+class AsignaturaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Asignatura
+        fields = ('id', 'code', 'name')
