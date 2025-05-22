@@ -11,7 +11,8 @@ urlpatterns = [
     path('asignatura/<int:pk>/', views.AsignaturaDetail.as_view()),
     path('curso/', views.CursoList.as_view()),
     path('curso/<int:pk>/', views.CursoDetail.as_view()),
-
+    path('reserva/', views.ReservaList.as_view()),
+    path('reserva/<int:pk>/', views.ReservaDetail.as_view()),
 ]
 
 urlpatterns = format_suffix_patterns(urlpatterns)
