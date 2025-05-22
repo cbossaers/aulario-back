@@ -15,3 +15,13 @@ class AsignaturaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Asignatura
         fields = ('id', 'code', 'name')
+
+class CursoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Curso
+        fields = ('id', 'name', 'capacity', 'asignatura')
+
+class ReservaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reserva
+        fields = ('id', 'name', 'aula', 'curso', 'asignatura', 'usuario', 'fecha')
