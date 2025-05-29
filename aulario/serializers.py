@@ -21,13 +21,24 @@ class AsignaturaSerializer(serializers.ModelSerializer):
 
 
 class CursoSerializer(serializers.ModelSerializer):
-    asignaturas = AsignaturaSerializer(many=True)
-
+    asignaturas = AsignaturaSerializer(many=True, read_only=True)
+    asignaturas_ids = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Asignatura.objects.all(),
+        write_only=True,
+        source='asignaturas'
+    )
 
     class Meta:
         model = Curso
-        fields = ('id', 'name', 'capacity', 'asignaturas')
+        fields = ['id', 'name', 'capacity', 'asignaturas', 'asignaturas_ids']
 
+
+def create(self, validated_data):
+        asignaturas = validated_data.pop('asignaturas')
+        curso = Curso.objects.create(**validated_data)
+        curso.asignaturas.set(asignaturas)
+        return curso
 
 class ReservaSerializer(serializers.ModelSerializer):
     class Meta:
