@@ -10,11 +10,13 @@ from aulario.models import User, Aula, Asignatura, Curso, Reserva
 from aulario.serializers import (UserSerializer, AulaSerializer, AsignaturaSerializer,
                                  CursoSerializer, ReservaSerializer)
 
+
 @permission_classes([AllowAny])
 class UserList(APIView):
     """
     List all users, or create a new user.
     """
+
     def get(self, request, format=None):
         user = User.objects.all()
         serializer = UserSerializer(user, many=True)
@@ -27,11 +29,13 @@ class UserList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 @permission_classes([AllowAny])
 class UserDetail(APIView):
     """
     Retrieve, update or delete a user instance.
     """
+
     def get_object(self, pk):
         try:
             return User.objects.get(pk=pk)
@@ -56,11 +60,13 @@ class UserDetail(APIView):
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 @permission_classes([AllowAny])
 class AulaList(APIView):
     """
     List all aulas, or create a new aula.
     """
+
     def get(self, request, format=None):
         aula = Aula.objects.all()
         serializer = AulaSerializer(aula, many=True)
@@ -73,11 +79,13 @@ class AulaList(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 @permission_classes([AllowAny])
 class AulaDetail(APIView):
     """
     Retrieve, update or delete a aula instance.
     """
+
     def get_object(self, pk):
         try:
             return Aula.objects.get(pk=pk)
@@ -102,6 +110,7 @@ class AulaDetail(APIView):
         aula.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 @permission_classes([AllowAny])
 class AsignaturaList(APIView):
     """
@@ -110,7 +119,7 @@ class AsignaturaList(APIView):
 
     def get(self, request, format=None):
         asignatura = Asignatura.objects.all()
-        serializer = AulaSerializer(asignatura, many=True)
+        serializer = AsignaturaSerializer(asignatura, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):
@@ -119,6 +128,7 @@ class AsignaturaList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @permission_classes([AllowAny])
 class AsignaturaDetail(APIView):
@@ -150,6 +160,7 @@ class AsignaturaDetail(APIView):
         asignatura.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 @permission_classes([AllowAny])
 class CursoList(APIView):
     """
@@ -167,6 +178,7 @@ class CursoList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @permission_classes([AllowAny])
 class CursoDetail(APIView):
@@ -198,6 +210,7 @@ class CursoDetail(APIView):
         curso.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 @permission_classes([AllowAny])
 class ReservaList(APIView):
     """
@@ -215,6 +228,7 @@ class ReservaList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 @permission_classes([AllowAny])
 class ReservaDetail(APIView):

@@ -17,6 +17,7 @@ class Aula(models.Model):
     def __str__(self):
         return self.name, self.capacity
 
+#Author
 class Asignatura(models.Model):
     code = models.CharField(max_length=10)
     name = models.CharField(max_length=100)
@@ -24,13 +25,14 @@ class Asignatura(models.Model):
     def __str__(self):
         return self.name, self.code
 
+#Book
 class Curso(models.Model):
     name = models.CharField(max_length=100)
     capacity = models.IntegerField()
     asignaturas = models.ManyToManyField(Asignatura)
 
     def __str__(self):
-        return self.name, self.capacity, self.asignaturas
+        return self.name + " " + str(self.capacity) + " " + str(self.asignaturas)
 
 class Reserva(models.Model):
     name = models.CharField(max_length=100)

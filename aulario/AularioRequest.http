@@ -1,8 +1,21 @@
 ### Send PUT request with json body
-PUT http://127.0.0.1:8000/aulario/aula/2/
+GET http://127.0.0.1:8000/aulario/curso/1/
+Accept: application/json
+
+
+### Send POST request with json body
+PUT http://127.0.0.1:8000/aulario/curso/2/
 Content-Type: application/json
 
 {
-  "name": "Nuevo2",
-  "capacity": "999"
+  "id": 2,
+  "name": "2SMRA",
+  "capacity": 20,
+  "asignaturas": [
+    {
+      "id": 1,
+      "code": "AAC",
+      "name": "Adoro Aula Campus"
+    }
+  ]
 }
