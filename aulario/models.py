@@ -30,7 +30,7 @@ class Curso(models.Model):
     asignaturas = models.ManyToManyField(Asignatura)
 
     def __str__(self):
-        return self.name + " " + str(self.capacity) + " " + str(self.asignaturas)
+        return self.name, self.capacity
 
 class Reserva(models.Model):
     name = models.CharField(max_length=100)
