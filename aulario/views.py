@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.http import Http404
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
@@ -218,8 +219,17 @@ class ReservaList(APIView):
     """
 
     def get(self, request, format=None):
-        reserva = Reserva.objects.select_related('aula', 'curso', 'asignatura', 'usuario').all()
-        serializer = ReservaSerializer(reserva, many=True)
+        fecha_inicio = request.query_params.get('fecha_inicio', None)
+        fecha_fin = request.query_params.get('fecha_fin', None)
+
+        reservas = Reserva.objects.select_related('aula', 'curso', 'asignatura', 'usuario').all()
+
+        if fecha_inicio and fecha_fin:
+            fecha_inicio = datetime.strptime(fecha_inicio, '%Y-%m-%d').replace(hour=0, minute=0, second=0)
+            fecha_fin = datetime.strptime(fecha_fin, '%Y-%m-%d').replace(hour=23, minute=59, second=59)
+            reservas = reservas.filter(fecha__range=[fecha_inicio, fecha_fin])
+
+        serializer = ReservaSerializer(reservas, many=True)
         return Response(serializer.data)
 
     def post(self, request, format=None):

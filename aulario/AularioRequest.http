@@ -1,4 +1,4 @@
-### Send PUT request with json body
+### Send GET request
 GET http://127.0.0.1:8000/aulario/curso/1/
 Accept: application/json
 
@@ -37,3 +37,18 @@ Content-Type: application/json
     "usuario_id": 1
 }
 
+### Send PUT request with json body
+PUT http://127.0.0.1:8000/aulario/reserva/
+Content-Type: application/json
+
+{
+    "name": "Reserva Modificada",
+    "fecha": "2025-06-03T10:00:00Z",
+    "aula_id": 1,
+    "curso_id": 1,
+    "asignatura_id": 1,
+    "usuario_id": 1
+}
+
+### Send GET request
+GET http://127.0.0.1:8000/aulario/reserva/?fecha_inicio=2025-06-01&fecha_fin=2025-06-4
