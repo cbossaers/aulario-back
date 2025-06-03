@@ -34,11 +34,12 @@ class Curso(models.Model):
 
 class Reserva(models.Model):
     name = models.CharField(max_length=100)
-    aula = models.ManyToManyField(Aula)
-    curso = models.ManyToManyField(Curso)
-    asignatura = models.ManyToManyField(Asignatura)
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE)
+    aula = models.ForeignKey(Aula, on_delete=models.CASCADE, null=True)
+    curso = models.ForeignKey(Curso, on_delete=models.CASCADE, null=True)
+    asignatura = models.ForeignKey(Asignatura, on_delete=models.CASCADE, null=True)
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
     fecha = models.DateTimeField()
+
 
     def __str__(self):
         return self.usuario.name, self.curso.name

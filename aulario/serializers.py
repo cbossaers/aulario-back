@@ -40,7 +40,42 @@ def create(self, validated_data):
         curso.asignaturas.set(asignaturas)
         return curso
 
+
 class ReservaSerializer(serializers.ModelSerializer):
+    aula = AulaSerializer(read_only=True)
+    curso = CursoSerializer(read_only=True)
+    asignatura = AsignaturaSerializer(read_only=True)
+    usuario = UserSerializer(read_only=True)
+
+    # Campos para escritura
+    aula_id = serializers.PrimaryKeyRelatedField(
+        queryset=Aula.objects.all(),
+        write_only=True,
+        source='aula'
+    )
+    curso_id = serializers.PrimaryKeyRelatedField(
+        queryset=Curso.objects.all(),
+        write_only=True,
+        source='curso'
+    )
+    asignatura_id = serializers.PrimaryKeyRelatedField(
+        queryset=Asignatura.objects.all(),
+        write_only=True,
+        source='asignatura'
+    )
+    usuario_id = serializers.PrimaryKeyRelatedField(
+        queryset=User.objects.all(),
+        write_only=True,
+        source='usuario'
+    )
+
     class Meta:
         model = Reserva
-        fields = ('id', 'name', 'aula', 'curso', 'asignatura', 'usuario', 'fecha')
+        fields = ['id', 'name', 'fecha',
+                  'aula', 'aula_id',
+                  'curso', 'curso_id',
+                  'asignatura', 'asignatura_id',
+                  'usuario', 'usuario_id']
+
+    def create(self, validated_data):
+        return Reserva.objects.create(**validated_data)

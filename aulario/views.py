@@ -218,7 +218,7 @@ class ReservaList(APIView):
     """
 
     def get(self, request, format=None):
-        reserva = Reserva.objects.all()
+        reserva = Reserva.objects.select_related('aula', 'curso', 'asignatura', 'usuario').all()
         serializer = ReservaSerializer(reserva, many=True)
         return Response(serializer.data)
 
@@ -238,7 +238,7 @@ class ReservaDetail(APIView):
 
     def get_object(self, pk):
         try:
-            return Reserva.objects.get(pk=pk)
+            return Reserva.objects.select_related('aula', 'curso', 'asignatura', 'usuario').get(pk=pk)
         except Reserva.DoesNotExist:
             raise Http404
 
