@@ -7,6 +7,10 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'name', 'email', 'password', 'admin')
 
+class UserSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'name', 'email']
 
 class AulaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -45,7 +49,7 @@ class ReservaSerializer(serializers.ModelSerializer):
     aula = AulaSerializer(read_only=True)
     curso = CursoSerializer(read_only=True)
     asignatura = AsignaturaSerializer(read_only=True)
-    usuario = UserSerializer(read_only=True)
+    usuario = UserSimpleSerializer(read_only=True)
 
     # Campos para escritura
     aula_id = serializers.PrimaryKeyRelatedField(
