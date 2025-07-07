@@ -51,4 +51,4 @@ Content-Type: application/json
 }
 
 ### Send GET request
-GET http://127.0.0.1:8000/aulario/reserva/?fecha_inicio=2025-06-01&fecha_fin=2025-06-4
+GET http://127.0.0.1:8000/aulario/reserva/?fecha_inicio=2025-06-01&fecha_fin=2025-06-28&aula=2

@@ -221,6 +221,7 @@ class ReservaList(APIView):
     def get(self, request, format=None):
         fecha_inicio = request.query_params.get('fecha_inicio', None)
         fecha_fin = request.query_params.get('fecha_fin', None)
+        aula_id = request.query_params.get('aula')
 
         reservas = Reserva.objects.select_related('aula', 'curso', 'asignatura', 'usuario').all()
 
@@ -228,6 +229,9 @@ class ReservaList(APIView):
             fecha_inicio = datetime.strptime(fecha_inicio, '%Y-%m-%d').replace(hour=0, minute=0, second=0)
             fecha_fin = datetime.strptime(fecha_fin, '%Y-%m-%d').replace(hour=23, minute=59, second=59)
             reservas = reservas.filter(fecha__range=[fecha_inicio, fecha_fin])
+
+        if aula_id:
+            reservas = reservas.filter(aula__id=aula_id)
 
         serializer = ReservaSerializer(reservas, many=True)
         return Response(serializer.data)
